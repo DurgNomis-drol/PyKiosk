@@ -8,11 +8,6 @@ from pathlib import Path
 
 """ TODO """
 # 1: Gesture control. Go to homepage, go back? Is it done?
-# 2: Screen dimming?
-# 3: Reset to homepage after sometime
-# 4: Better web control page.
-# 5: Better security.
-# 6: Error handling, custom logger?
 
 
 """Initialize flask."""
