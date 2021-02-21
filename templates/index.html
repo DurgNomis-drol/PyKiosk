@@ -1,0 +1,45 @@
+<html>
+    <head>
+        <title>PyKiosk</title>
+        <link rel="stylesheet" href="/static/styles.css">
+    </head>
+    <body>
+        <div class="form_warning" hidden>
+            <label>Alt godt</label>
+        </div>
+
+        <h1>Welcome to PyKiosk</h1>
+        <p>This is a WebKiosk application primarily intended for use with home-automation projects.</p>
+        <h4>Current page: <b>{{ current_url }}</b></h4>
+        <h4>Homepage: <b>{{ url }}</b></h4>
+        <div class="form_token">
+            <label for="token">Token</label>
+            <input id="token" type="text" readonly spellcheck="false" value="{{ token }}">
+        </div>
+
+        <h3>Webkiosk:</h3>
+        <label for="url_to_open">Url to open</label>
+        <input id="url_to_open" type="url" spellcheck="false" placeholder="http://example.com/">
+        <div class="form_buttons">
+            <button id="open_page">Open url</button>
+            <button id="go_to_homepage">Go to homepage</button>
+            <button id="reset">Reset</button>
+        </div>
+
+        <h3>Edit config file: (Reboot/restart necessary)</h3>
+        <textarea id="config" spellcheck="false">{{ config_file }}</textarea>
+        <div class="form_buttons">
+            <button id="save_config">Save</button>
+            <button id="reset_config">Reset to default</button>
+        </div>
+
+        <h3>System:</h3>
+        <p>asdkajsdasdjklasdkasjdljasdkljasdjaslkdjasljdlkasjdlkasjd</p>
+        <div class="form_buttons">
+            <button id="reboot">Reboot</button>
+            <button id="shutdown">Shutdown</button>
+        </div>
+    </body>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script type="text/javascript" src="/static/script.js"></script>
+</html>
