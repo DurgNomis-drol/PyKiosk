@@ -78,9 +78,9 @@ class Config(Resource):
             response.update({
                 'message': 'Config saved to file.'
             })
-            return json.dumps(response, indent=INDENT), 200, HEADER
+            return response, 200, HEADER
         else:
-            return json.dumps(ERROR_MISSING_CONFIG, indent=INDENT), 200, HEADER
+            return ERROR_MISSING_CONFIG, 200, HEADER
 
 
 class System(Resource):
@@ -97,8 +97,8 @@ class System(Resource):
 
         battery_status = subprocess.run(status.split(), stdout=subprocess.PIPE)
 
-        response = RESPONSE_SUCCESS
-        response.update({
+        response = {
+            'success': True,
             'system': {
                 'info': str(info.stdout.decode('utf-8').rstrip())},
             'battery': {
@@ -110,27 +110,41 @@ class System(Resource):
                 'since': int(kiosk.since),
                 'last_url_opened': str(kiosk.last_url_opened)
             }
-        })
+        }
 
-        return json.dumps(response, indent=INDENT), 200, HEADER
+        return response, 200, HEADER
 
     @auth.login_required
     def post(self, service):
         if service in config[SERVICES]:
             output = execute_command(COMMANDS[service])
             if output:
-                return json.dumps(RESPONSE_SUCCESS, indent=INDENT), 200, HEADER
+                return RESPONSE_SUCCESS, 200, HEADER
             else:
                 response = RESPONSE_FAILED
                 response.update({
                     'message': output
                 })
-                return json.dumps(response, indent=INDENT), 200, HEADER
+                return response, 200, HEADER
         else:
-            return json.dumps(ERROR_NOT_ENABLED, indent=INDENT), 200, HEADER
+            return ERROR_NOT_ENABLED, 200, HEADER
 
 
 class Kiosk(Resource):
+
+    @auth.login_required
+    def get(self):
+        response = {
+            'success': True,
+            'kiosk': {
+                'homepage': str(config[KIOSK][KIOSK_URL]),
+                'state': str(kiosk.state),
+                'since': int(kiosk.since),
+                'last_url_opened': str(kiosk.last_url_opened)
+            }
+        }
+
+        return response, 200, HEADER
 
     @auth.login_required
     def post(self):
@@ -143,25 +157,25 @@ class Kiosk(Resource):
                     'url_opened': config[KIOSK][KIOSK_URL],
                     'homepage': True
                 })
-                return json.dumps(response, indent=INDENT), 200, HEADER
+                return response, 200, HEADER
             else:
-                return json.dumps(RESPONSE_FAILED, indent=INDENT), 200, HEADER
+                return RESPONSE_FAILED, 200, HEADER
         else:
             url = content['url']
             if kiosk.open_page(url):
                 response.update({
                     'url_opened': url
                 })
-                return json.dumps(response, indent=INDENT), 200, HEADER
+                return response, 200, HEADER
             else:
-                return json.dumps(RESPONSE_FAILED, indent=INDENT), 200, HEADER
+                return RESPONSE_FAILED, 200, HEADER
 
     @auth.login_required
     def delete(self):
         if kiosk.close_page():
-            return json.dumps(RESPONSE_SUCCESS, indent=INDENT), 200, HEADER
+            return RESPONSE_SUCCESS, 200, HEADER
         else:
-            return json.dumps(RESPONSE_FAILED, indent=INDENT), 200, HEADER
+            return RESPONSE_FAILED, 200, HEADER
 
 
 api.add_resource(Config, REST_ENDPOINT + '/config')
