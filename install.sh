@@ -1,6 +1,6 @@
-echo "=================================="
-echo "=== Install script for PyKiosk ==="
-echo "=================================="
+echo "======================================================"
+echo "============= Install script for PyKiosk ============="
+echo "======================================================"
 echo "Setting up and installing dependancies..."
 sudo dnf install python3-pip chromium -y
 echo "Done!"
@@ -30,6 +30,6 @@ echo "Enabling autologin for $USER"
 sudo sed '/\[daemon\]/a AutomaticLogin=$USER'
 sudo sed '/\[daemon\]/a AutomaticLoginEnable=True'
 echo "Autologin enabled!"
-echo "You have to manually change orientation, because xrandr cannot."
-echo "Done!"
+echo "You have to manually change orientation, because xrandr cannot do it anymore."
+echo "Installation is done!"
 echo "Please reboot your system now by typing 'reboot'"

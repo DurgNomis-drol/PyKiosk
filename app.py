@@ -43,6 +43,8 @@ kiosk = ChromeWebKiosk(config[KIOSK])
 
 """Flask app below"""
 
+COMMANDS = FEDORA_COMMANDS
+
 
 @app.route(ROOT)
 def index():
@@ -85,9 +87,9 @@ class System(Resource):
 
     @auth.login_required
     def get(self):
-        system = 'uname -a'
-        capacity = "cat /sys/class/power_supply/BATC/capacity"
-        status = "cat /sys/class/power_supply/BATC/status"
+        system = COMMANDS[SYSTEM_INFO]
+        capacity = COMMANDS[SYSTEM_BATTERY_CAPACITY]
+        status = COMMANDS[SYSTEM_BATTERY_STATUS]
 
         info = subprocess.run(system.split(), stdout=subprocess.PIPE)
 
@@ -115,8 +117,7 @@ class System(Resource):
     @auth.login_required
     def post(self, service):
         if service in config[SERVICES]:
-            command = 'systemctl ' + service
-            output = execute_command(command)
+            output = execute_command(COMMANDS[service])
             if output:
                 return json.dumps(RESPONSE_SUCCESS, indent=INDENT), 200, HEADER
             else:

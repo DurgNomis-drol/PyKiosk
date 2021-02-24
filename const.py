@@ -37,7 +37,26 @@ SUSPEND = "suspend"
 SHUTDOWN = "shutdown"
 REBOOT = "reboot"
 
-# DEFAULT_CONF
+
+# ----- Commands
+# ----------------------
+SYSTEM_INFO = "system_info"
+SYSTEM_BATTERY_CAPACITY = "system_battery"
+SYSTEM_BATTERY_STATUS = "system_status"
+
+# COMMANDS
+FEDORA_COMMANDS = {
+    SYSTEM_INFO: "uname -a",
+    SYSTEM_BATTERY_CAPACITY: "cat /sys/class/power_supply/BATC/capacity",
+    SYSTEM_BATTERY_STATUS: "at /sys/class/power_supply/BATC/status",
+    REBOOT: 'systemctl reboot',
+    SHUTDOWN: 'halt',
+    SUSPEND: 'systemctl suspend'
+}
+
+
+# ----- Default config file
+# ----------------------
 DEFAULT_CONFIG = {
     PORT: 5000,
     SERVICES: [
